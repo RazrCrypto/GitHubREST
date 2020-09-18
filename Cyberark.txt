@@ -1,4 +1,3 @@
-Hello
 PVWA URL: http://10.0.0.75/PasswordVault/logon.aspx?ReturnUrl=%2fPasswordVault%2fdefault.aspx
 
 CyberArk REST API Details:
