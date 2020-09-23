@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 Hello
 PVWA URL: http://10.0.0.75/PasswordVault/logon.aspx?ReturnUrl=%2fPasswordVault%2fdefault.aspx
 
@@ -247,4 +248,255 @@ Sample Response Body:
         ],
         "SearchIn": "Vault"
     }
+=======
+Hello
+PVWA URL: http://10.0.0.75/PasswordVault/logon.aspx?ReturnUrl=%2fPasswordVault%2fdefault.aspx
+
+CyberArk REST API Details:
+
+1. Logon API:
+
+Reference Documentation Link: https://docs.cyberark.com/Product-Doc/OnlineHelp/PAS/Latest/en/Content/WebServices/API-logon-LP.htm
+
+Possible Logon Methods: CyberArk / Windows / LDAP / RADIUS
+
+Chosen Logon method: CyberArk
+
+URL: http://10.0.0.75/PasswordVault/WebServices/auth/Cyberark/CyberArkAuthenticationService.svc/logon
+HTTP method: POST
+Headers:
+Content type: application/json
+Body:
+{
+  "username":"AOB_Admin",
+  "password":"<password>"
+}
+Response Code: 200
+Sample Response:
+{
+  "CyberArkLogonResult": "OTk4MmRmODYtODk4OS00YjIwLTkxNTgtYmRmOGUyYmQ5MWRmOzdDNzAzMzM4QjFEQjdDRkM7MDAwMDAwMDI1Qzk1MjA4NDc0QUE3OTNCOTg3RDBFRDdCOUZFRjVEQzhCMEUxOUZDMTY3MDlBNTVCRURGMEM5Qzc5OThCM0U0MDAwMDAwMDA7"
+}
+
+2. Add Safe API:
+
+Reference Documentation Link: https://docs.cyberark.com/Product-Doc/OnlineHelp/PAS/Latest/en/Content/WebServices/Add%20Safe.htm
+
+URL: http://10.0.0.75/PasswordVault/WebServices/PIMServices.svc/Safes
+HTTP method: POST
+Headers:
+Content type: application/json
+Authorization: "<<CyberArkLogonResult from previous API response>>"
+Request Body:
+{
+  "safe":{
+    "SafeName": "TimeSheet_WN_Safe",
+    "Description": "Safe to maintain TimeSheet application Windows Server details",
+    "OLACEnabled": false,
+    "ManagingCPM": "PasswordManager",
+    "NumberOfDaysRetention": 5
+  }
+}
+
+Response Code: 201
+
+Sample Response Body:
+{
+    "AddSafeResult": {
+        "Description": "Safe to maintain TimeSheet application Windows Server details",
+        "ManagingCPM": "PasswordManager",
+        "NumberOfDaysRetention": 10,
+        "NumberOfVersionsRetention": null,
+        "OLACEnabled": false,
+        "SafeName": "TimeSheet_WN_Safe"
+    }
+}
+
+3. Add an account:
+
+Reference Documentation Link: docs.cyberark.com/Product-Doc/OnlineHelp/PAS/Latest/en/Content/WebServices/Add%20Account%20v10.htm
+
+URL: http://10.0.0.75/PasswordVault/api/Accounts
+HTTP method: POST
+Headers:
+Content type: application/json
+Authorization: "<<CyberArkLogonResult from previous API response>>"
+Request Body:
+{
+  "name": "usernameX-TimeSheet_WN_Safe",
+  "address": "10.0.0.75",
+  "userName": "usernameX",
+  "platformId": "Windows_Domain_Account_COE",
+  "safeName": "TimeSheet_WN_Safe",
+  "secretType": "Pass@123",
+  "secret": "string",
+  "platformAccountProperties": {},
+  "secretManagement": {
+    "automaticManagementEnabled": true
+  },
+  "remoteMachinesAccess": {
+    "remoteMachines": "10.0.0.75",
+    "accessRestrictedToRemoteMachines": true
+  }
+}
+
+Response Code: 201
+
+Sample Response Body:
+{
+  "name": "string",
+  "address": "string",
+  "userName": "string",
+  "platformId": "string",
+  "safeName": "string",
+  "secretType": "key",
+  "secret": "string",
+  "platformAccountProperties": {},
+  "secretManagement": {
+    "automaticManagementEnabled": true,
+    "manualManagementReason": "string"
+  },
+  "remoteMachinesAccess": {
+    "remoteMachines": "string",
+    "accessRestrictedToRemoteMachines": true
+  }
+}
+
+4. Add Safe Members:
+
+Reference Documentation Link: https://docs.cyberark.com/Product-Doc/OnlineHelp/PAS/Latest/en/Content/WebServices/Safe%20Members.htm
+
+URL: http://10.0.0.75/PasswordVault/WebServices/PIMServices.svc/Safes/TimeSheet_WN_Safe/Members
+HTTP method: POST
+Headers:
+Content type: application/json
+Authorization: "<<CyberArkLogonResult from previous API response>>"
+Request Body:
+{
+  "member":{
+    "MemberName":"vishu",
+    "SearchIn":"Vault",
+    "MembershipExpirationDate":"",
+    "Permissions":
+     [
+       {"Key":"UseAccounts", "Value":true},
+       {"Key":"RetrieveAccounts", "Value":true},
+       {"Key":"ListAccounts", "Value":true},
+       {"Key":"AddAccounts", "Value":true},
+       {"Key":"UpdateAccountContent", "Value":true},
+       {"Key":"UpdateAccountProperties", "Value":true},
+       {"Key":"InitiateCPMAccountManagementOperations", "Value":true},
+       {"Key":"SpecifyNextAccountContent", "Value":true},
+       {"Key":"RenameAccounts", "Value":true},
+       {"Key":"DeleteAccounts", "Value":true},
+       {"Key":"UnlockAccounts", "Value":true},
+       {"Key":"ManageSafe", "Value":true},
+       {"Key":"ManageSafeMembers", "Value":true},
+       {"Key":"BackupSafe", "Value":true},
+       {"Key":"ViewAuditLog", "Value":true},
+       {"Key":"ViewSafeMembers", "Value":true},
+       {"Key":"RequestsAuthorizationLevel", "Value":0},
+       {"Key":"AccessWithoutConfirmation", "Value":true},
+       {"Key":"CreateFolders", "Value":true},
+       {"Key":"DeleteFolders", "Value":true},
+       {"Key":"MoveAccountsAndFolders", "Value":true}
+     ]
+  }
+}
+
+Response Code: 201
+
+Sample Response Body:
+{
+    "member": {
+        "MemberName": "vishu",
+        "MembershipExpirationDate": "",
+        "Permissions": [
+            {
+                "Key": "UseAccounts",
+                "Value": true
+            },
+            {
+                "Key": "RetrieveAccounts",
+                "Value": true
+            },
+            {
+                "Key": "ListAccounts",
+                "Value": true
+            },
+            {
+                "Key": "AddAccounts",
+                "Value": true
+            },
+            {
+                "Key": "UpdateAccountContent",
+                "Value": true
+            },
+            {
+                "Key": "UpdateAccountProperties",
+                "Value": true
+            },
+            {
+                "Key": "InitiateCPMAccountManagementOperations",
+                "Value": true
+            },
+            {
+                "Key": "SpecifyNextAccountContent",
+                "Value": true
+            },
+            {
+                "Key": "RenameAccounts",
+                "Value": true
+            },
+            {
+                "Key": "DeleteAccounts",
+                "Value": true
+            },
+            {
+                "Key": "UnlockAccounts",
+                "Value": true
+            },
+            {
+                "Key": "ManageSafe",
+                "Value": true
+            },
+            {
+                "Key": "ManageSafeMembers",
+                "Value": true
+            },
+            {
+                "Key": "BackupSafe",
+                "Value": true
+            },
+            {
+                "Key": "ViewAuditLog",
+                "Value": true
+            },
+            {
+                "Key": "ViewSafeMembers",
+                "Value": true
+            },
+            {
+                "Key": "AccessWithoutConfirmation",
+                "Value": true
+            },
+            {
+                "Key": "CreateFolders",
+                "Value": true
+            },
+            {
+                "Key": "DeleteFolders",
+                "Value": true
+            },
+            {
+                "Key": "MoveAccountsAndFolders",
+                "Value": true
+            },
+            {
+                "Key": "RequestsAuthorizationLevel",
+                "Value": 0
+            }
+        ],
+        "SearchIn": "Vault"
+    }
+>>>>>>> a28b7ee07eb790b5bb21ff193cdf7b6443422baf
 }
